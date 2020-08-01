@@ -22,6 +22,7 @@ namespace EverCraft.Core.Tests
             character.Alignment.Should().Be(Alignments.Neutral);
             character.ArmourClass.Should().Be(10);
             character.HitPoints.Should().Be(5);
+            character.Alive.Should().Be(true);
         }
 
         [TestMethod]
@@ -52,6 +53,18 @@ namespace EverCraft.Core.Tests
 
             var result = character.Attack(roll, target);
             result.Should().Be(expectedResult);
+
+        }
+
+        [TestMethod]
+        [DataRow(5,4, true)]
+        [DataRow(1, 0, false)]
+        public void ReceiveDamage(int hitPoints, int expectedHitPoints, bool isAlive)
+        {
+            character.HitPoints = hitPoints;
+            character.ReceiveDamage();
+            character.HitPoints.Should().Be(expectedHitPoints);
+            character.Alive.Should().Be(isAlive);
 
         }
 
