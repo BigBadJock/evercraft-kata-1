@@ -7,10 +7,17 @@ namespace EverCraft.Core.Tests
     [TestClass]
     public class CharacterShould
     {
+        Character character;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.character = new Character();
+        }
+
         [TestMethod]
         public void HaveDefaultNameAtCreation()
         {
-            var character = new Character();
             character.Name.Should().Be("default");
         }
 
@@ -20,17 +27,13 @@ namespace EverCraft.Core.Tests
         [DataRow("Gimli")]
         public void SetAndGetName(string name)
         {
-            var character = new Character();
             character.Name = name;
-
             character.Name.Should().Be(name);
         }
 
         [TestMethod]
         public void HaveDefaultAlignmentAtCreation()
         {
-            var character = new Character();
-
             character.Alignment.Should().Be(Alignments.Neutral);
         }
 
@@ -41,7 +44,6 @@ namespace EverCraft.Core.Tests
         [DataRow(Alignments.Good)]
         public void SetAndGetAlignment(Alignments alignment)
         {
-            var character = new Character();
             character.Alignment = alignment;
 
             character.Alignment.Should().Be(alignment);
@@ -50,9 +52,7 @@ namespace EverCraft.Core.Tests
         [TestMethod]
         public void HaveDefaultArmourClassAtCreation()
         {
-            var character = new Character();
             character.ArmourClass.Should().Be(10);
-
         }
 
         [TestMethod]
@@ -62,7 +62,6 @@ namespace EverCraft.Core.Tests
 
         public void SetAndGetArmourClass(int armourClass)
         {
-            var character = new Character();
             character.ArmourClass = armourClass;
             character.ArmourClass.Should().Be(armourClass);
         }
