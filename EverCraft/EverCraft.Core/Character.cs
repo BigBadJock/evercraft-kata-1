@@ -9,5 +9,10 @@ namespace EverCraft.Core
         public Alignments Alignment { get; set; } = Alignments.Neutral;
         public int ArmourClass { get; set; } = 10;
         public int HitPoints { get; set; } = 5;
+
+        public object Attack(int roll, int opponentsArmourClass)
+        {
+            return (roll > opponentsArmourClass);
+        }
     }
 }

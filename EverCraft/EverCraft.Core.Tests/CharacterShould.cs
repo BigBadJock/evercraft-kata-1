@@ -41,5 +41,16 @@ namespace EverCraft.Core.Tests
             character.HitPoints.Should().Be(hitPoints);
         }
 
+        [TestMethod]
+        [DataRow(15,5, true)]
+        [DataRow(5,10, false)]
+        [DataRow(5,5, false)]
+        public void Attack(int roll, int opponentsArmourClass, bool expectedResult)
+        {
+            var result = character.Attack(roll, opponentsArmourClass);
+            result.Should().Be(expectedResult);
+
+        }
+
     }
 }
