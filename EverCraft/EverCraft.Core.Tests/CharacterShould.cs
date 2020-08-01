@@ -65,6 +65,8 @@ namespace EverCraft.Core.Tests
         [DataRow(14, 5, 3, 2, true)]
         [DataRow(13, 5, 2, 1, true)]
         [DataRow(12, 5, 1, 0, false)]
+        [DataRow(20, 5, 2, 0, false)]
+        [DataRow(20, 5, 1, -1, false)]
         public void CausesDamageOnAttack(int roll, int opponentsArmourClass, int opponentsHitPoints, int expectedHitPoints, bool isAlive)
         {
             var target = new Character();
