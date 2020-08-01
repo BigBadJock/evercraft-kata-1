@@ -16,10 +16,13 @@ namespace EverCraft.Core.Tests
         }
 
         [TestMethod]
-        public void HaveDefaultNameAtCreation()
+        public void HaveDefaultsAtCreation()
         {
             character.Name.Should().Be("default");
+            character.Alignment.Should().Be(Alignments.Neutral);
+            character.ArmourClass.Should().Be(10);
         }
+
 
         [TestMethod]
         [DataRow("Bilbo")]
@@ -29,12 +32,6 @@ namespace EverCraft.Core.Tests
         {
             character.Name = name;
             character.Name.Should().Be(name);
-        }
-
-        [TestMethod]
-        public void HaveDefaultAlignmentAtCreation()
-        {
-            character.Alignment.Should().Be(Alignments.Neutral);
         }
 
 
@@ -49,11 +46,6 @@ namespace EverCraft.Core.Tests
             character.Alignment.Should().Be(alignment);
         }
 
-        [TestMethod]
-        public void HaveDefaultArmourClassAtCreation()
-        {
-            character.ArmourClass.Should().Be(10);
-        }
 
         [TestMethod]
         [DataRow(5)]
