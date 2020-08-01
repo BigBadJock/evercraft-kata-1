@@ -21,21 +21,24 @@ namespace EverCraft.Core.Tests
             character.Name.Should().Be("default");
             character.Alignment.Should().Be(Alignments.Neutral);
             character.ArmourClass.Should().Be(10);
+            character.HitPoints.Should().Be(5);
         }
 
         [TestMethod]
-        [DataRow("Frodo", Alignments.Good, 20)]
-        [DataRow("Boromir", Alignments.Neutral, 10)]
-        [DataRow("Gollum", Alignments.Evil, 5)]
-        public void SetAndGetBasicValues(string name, Alignments alignment, int armourClass)
+        [DataRow("Frodo", Alignments.Good, 20, 5)]
+        [DataRow("Boromir", Alignments.Neutral, 10, 10)]
+        [DataRow("Gollum", Alignments.Evil, 5, 7)]
+        public void SetAndGetBasicValues(string name, Alignments alignment, int armourClass, int hitPoints)
         {
             character.Name = name;
             character.Alignment = alignment;
             character.ArmourClass = armourClass;
+            character.HitPoints = hitPoints;
 
             character.Name.Should().Be(name);
             character.Alignment.Should().Be(alignment);
             character.ArmourClass.Should().Be(armourClass);
+            character.HitPoints.Should().Be(hitPoints);
         }
 
     }
