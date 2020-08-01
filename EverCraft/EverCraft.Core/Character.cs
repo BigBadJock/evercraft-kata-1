@@ -10,16 +10,22 @@ namespace EverCraft.Core
         public int ArmourClass { get; set; } = 10;
         public int HitPoints { get; set; } = 5;
         public bool Alive { get; set; } = true;
-
         public object Attack(int roll, Character target)
         {
-            return (roll > target.ArmourClass);
+            var isHit = roll > target.ArmourClass;
+            if(isHit)
+            {
+                target.ReceiveDamage(roll==20);
+                return true;
+            }
+            return false;
         }
-
-        public void ReceiveDamage()
+        private void ReceiveDamage(bool isCriticalHit)
         {
-            if(this.HitPoints > 0) this.HitPoints--;
-            if (this.HitPoints == 0) this.Alive = false;
+            int damage = isCriticalHit ? 2 : 1;
+            
+            if(this.HitPoints > 0) this.HitPoints -= damage;
+            if (this.HitPoints <= 0) this.Alive = false;
         }
     }
 }

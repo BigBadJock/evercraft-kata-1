@@ -57,14 +57,22 @@ namespace EverCraft.Core.Tests
         }
 
         [TestMethod]
-        [DataRow(5,4, true)]
-        [DataRow(1, 0, false)]
-        public void ReceiveDamage(int hitPoints, int expectedHitPoints, bool isAlive)
+        [DataRow(15, 5, 5, 4, true)]
+        [DataRow(5, 10, 5, 5, true)]
+        [DataRow(5, 5, 5, 5, true)]
+        [DataRow(20, 5, 7, 5, true)]
+        [DataRow(15,5,4,3, true)]
+        [DataRow(14, 5, 3, 2, true)]
+        [DataRow(13, 5, 2, 1, true)]
+        [DataRow(12, 5, 1, 0, false)]
+        public void CausesDamageOnAttack(int roll, int opponentsArmourClass, int opponentsHitPoints, int expectedHitPoints, bool isAlive)
         {
-            character.HitPoints = hitPoints;
-            character.ReceiveDamage();
-            character.HitPoints.Should().Be(expectedHitPoints);
-            character.Alive.Should().Be(isAlive);
+            var target = new Character();
+            target.ArmourClass = opponentsArmourClass;
+            target.HitPoints = opponentsHitPoints;
+            character.Attack(roll, target);
+            target.HitPoints.Should().Be(expectedHitPoints);
+            target.Alive.Should().Be(isAlive);
 
         }
 
