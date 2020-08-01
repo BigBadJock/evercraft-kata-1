@@ -47,7 +47,10 @@ namespace EverCraft.Core.Tests
         [DataRow(5,5, false)]
         public void Attack(int roll, int opponentsArmourClass, bool expectedResult)
         {
-            var result = character.Attack(roll, opponentsArmourClass);
+            var target = new Character();
+            target.ArmourClass = opponentsArmourClass;
+
+            var result = character.Attack(roll, target);
             result.Should().Be(expectedResult);
 
         }

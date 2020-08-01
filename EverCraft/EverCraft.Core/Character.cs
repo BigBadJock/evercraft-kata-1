@@ -10,9 +10,9 @@ namespace EverCraft.Core
         public int ArmourClass { get; set; } = 10;
         public int HitPoints { get; set; } = 5;
 
-        public object Attack(int roll, int opponentsArmourClass)
+        public object Attack(int roll, Character target)
         {
-            return (roll > opponentsArmourClass);
+            return (roll > target.ArmourClass);
         }
     }
 }
