@@ -23,39 +23,20 @@ namespace EverCraft.Core.Tests
             character.ArmourClass.Should().Be(10);
         }
 
-
         [TestMethod]
-        [DataRow("Bilbo")]
-        [DataRow("Frodo")]
-        [DataRow("Gimli")]
-        public void SetAndGetName(string name)
+        [DataRow("Frodo", Alignments.Good, 20)]
+        [DataRow("Boromir", Alignments.Neutral, 10)]
+        [DataRow("Gollum", Alignments.Evil, 5)]
+        public void SetAndGetBasicValues(string name, Alignments alignment, int armourClass)
         {
             character.Name = name;
-            character.Name.Should().Be(name);
-        }
-
-
-        [TestMethod]
-        [DataRow(Alignments.Evil)]
-        [DataRow(Alignments.Neutral)]
-        [DataRow(Alignments.Good)]
-        public void SetAndGetAlignment(Alignments alignment)
-        {
             character.Alignment = alignment;
-
-            character.Alignment.Should().Be(alignment);
-        }
-
-
-        [TestMethod]
-        [DataRow(5)]
-        [DataRow(10)]
-        [DataRow(20)]
-
-        public void SetAndGetArmourClass(int armourClass)
-        {
             character.ArmourClass = armourClass;
+
+            character.Name.Should().Be(name);
+            character.Alignment.Should().Be(alignment);
             character.ArmourClass.Should().Be(armourClass);
         }
+
     }
 }
