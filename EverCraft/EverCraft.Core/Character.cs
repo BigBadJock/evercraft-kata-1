@@ -6,6 +6,7 @@ namespace EverCraft.Core
     {
 
         public string Name { get; set; } = "default";
-        public Alignments Alignment { get; set; }
+        public Alignments Alignment { get; set; } = Alignments.Neutral;
+        public object ArmourClass { get; set; } = 10;
     }
 }
