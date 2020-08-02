@@ -3,8 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EverCraft.Core
 {
-    public class Character
+    public class Character : ICharacter
     {
+        public virtual int hitPointsPerLevel => 5;
+
+        public virtual int criticalDamageMultiplier => 2;
+
+        public virtual int baseDamage => 1;
+
         private int hitPoints;
 
         public Character()
@@ -15,9 +21,9 @@ namespace EverCraft.Core
 
 
         public string Name { get; set; } = "default";
-        public Alignments Alignment { get; set; } = Alignments.Neutral;
+        public virtual Alignments Alignment { get; set; } = Alignments.Neutral;
         public int ArmourClass { get; set; } = 10;
-        public int ModifiedArmourClass => ArmourClass + Dexterity.Modifier;
+        public virtual int ModifiedArmourClass => ArmourClass + Dexterity.Modifier;
 
         public int HitPoints
         {
@@ -65,7 +71,9 @@ namespace EverCraft.Core
         public int XP
         {
             get { return xp; }
-            set { xp = value;
+            set
+            {
+                xp = value;
                 LevelUp();
             }
         }
@@ -73,39 +81,66 @@ namespace EverCraft.Core
 
         public int Level { get; set; } = 1;
 
-        public bool Attack(int roll, Character target)
+        public virtual bool Attack(int roll, Character target)
         {
-            int levelAdjustment = (int)Math.Floor(this.Level / 2d);
-            int adjustedRoll = roll + levelAdjustment;
+            int adjustedRoll = AdjustRoll(roll);
 
-            var isHit = (adjustedRoll + this.Strength.Modifier) > target.ModifiedArmourClass;
+            bool isHit = CheckHit(target, adjustedRoll);
             if (isHit)
             {
-                target.ReceiveDamage(adjustedRoll >= 20, this.Strength.Modifier);
+                target.ReceiveDamage(adjustedRoll >= 20, this);
                 this.XP += 10;
                 return true;
             }
             return false;
         }
 
+        public int AdjustRoll(int roll)
+        {
+            int levelAdjustment = CalculateLevelAdjustment();
+            int adjustedRoll = roll + levelAdjustment;
+            return adjustedRoll;
+        }
+
+        protected virtual bool CheckHit(Character target, int adjustedRoll)
+        {
+            return (adjustedRoll + this.Strength.Modifier) > target.ModifiedArmourClass;
+        }
+
+        protected internal virtual int CalculateLevelAdjustment()
+        {
+            return (int)Math.Floor(this.Level / 2d);
+        }
+
         private void LevelUp()
         {
             int newLevel = Math.Max((int)Math.Floor(XP / 1000d) + 1, 1);
-            if(newLevel > this.Level)
+            if (newLevel > this.Level)
             {
                 this.Level = newLevel;
-                this.HitPoints += 5;
+                this.HitPoints += hitPointsPerLevel;
             }
-    }
+        }
 
-        private void ReceiveDamage(bool isCriticalHit, int attackersStrengthModifier)
+        protected internal virtual void ReceiveDamage(bool isCriticalHit, ICharacter attacker)
         {
-            int modifier = attackersStrengthModifier < 1 ? 0 : attackersStrengthModifier;
+            int modifier = attacker.Strength.Modifier < 1 ? 0 : attacker.Strength.Modifier;
 
-            int damage = 1 + modifier;
+            int damage = attacker.baseDamage + modifier;
+            if (attacker.GetType() == typeof(Paladin) && this.Alignment == Alignments.Evil)
+            {
+                damage += 2;
+            }
+
             if (isCriticalHit)
             {
-                damage = damage * 2;
+                var criticalDamageMultiplier = attacker.criticalDamageMultiplier;
+
+                if (attacker.GetType() == typeof(Paladin) && this.Alignment == Alignments.Evil)
+                {
+                    criticalDamageMultiplier = 3;
+                }
+                damage = damage * criticalDamageMultiplier;
             }
 
             if (this.CurrentHitPoints > 0) this.CurrentHitPoints -= damage;
